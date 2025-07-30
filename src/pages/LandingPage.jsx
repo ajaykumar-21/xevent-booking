@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-function LandingPage() {
+function SearchSection() {
   const [states, setStates] = useState([]);
   const [cities, setCities] = useState([]);
   const [selectedState, setSelectedState] = useState("");
   const [selectedCity, setSelectedCity] = useState("");
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -14,58 +15,62 @@ function LandingPage() {
       .then((data) => setStates(data));
   }, []);
 
-  const handleStateChange = (e) => {
-    const state = e.target.value;
-    setSelectedState(state);
-    fetch(`https://eventdata.onrender.com/cities/${state}`)
-      .then((res) => res.json())
-      .then((data) => setCities(data));
-  };
+  useEffect(() => {
+    if (selectedState) {
+      fetch(`https://eventdata.onrender.com/cities/${selectedState}`)
+        .then((res) => res.json())
+        .then((data) => setCities(data));
+    }
+  }, [selectedState]);
 
-  const handleSubmit = (e) => {
+  const handleSearch = (e) => {
     e.preventDefault();
     if (selectedState && selectedCity) {
-      navigate(`/events?state=${selectedState}&city=${selectedCity}`);
+      navigate(`/search?state=${selectedState}&city=${selectedCity}`);
     }
   };
 
   return (
-    <div className="p-6">
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div id="state">
-          <label>State:</label>
-          <select value={selectedState} onChange={handleStateChange}>
-            <option value="">Select State</option>
-            {states.map((s, i) => (
-              <option key={i} value={s}>
-                {s}
-              </option>
-            ))}
-          </select>
-        </div>
+    <form onSubmit={handleSearch} className="p-6">
+      {/* State Dropdown */}
+      <div id="state">
+        <label>Select State:</label>
+        <ul>
+          {states.map((state) => (
+            <li
+              key={state}
+              onClick={() => setSelectedState(state)}
+              style={{ cursor: "pointer" }}
+            >
+              {state}
+            </li>
+          ))}
+        </ul>
+        <p>Selected: {selectedState}</p>
+      </div>
 
-        <div id="city">
-          <label>City:</label>
-          <select
-            value={selectedCity}
-            onChange={(e) => setSelectedCity(e.target.value)}
-            disabled={!selectedState}
-          >
-            <option value="">Select City</option>
-            {cities.map((c, i) => (
-              <option key={i} value={c}>
-                {c}
-              </option>
-            ))}
-          </select>
-        </div>
+      {/* City Dropdown */}
+      <div id="city">
+        <label>Select City:</label>
+        <ul>
+          {cities.map((city) => (
+            <li
+              key={city}
+              onClick={() => setSelectedCity(city)}
+              style={{ cursor: "pointer" }}
+            >
+              {city}
+            </li>
+          ))}
+        </ul>
+        <p>Selected: {selectedCity}</p>
+      </div>
 
-        <button type="submit" id="searchBtn">
-          Search
-        </button>
-      </form>
-    </div>
+      <button id="searchBtn" type="submit">
+        Search
+      </button>
+    </form>
   );
 }
 
-export default LandingPage;
+export default SearchSection;
