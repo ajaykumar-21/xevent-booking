@@ -20,6 +20,8 @@ function SearchResultsPage() {
           setEvents(data);
           setLoading(false);
         });
+    } else {
+      setLoading(false);
     }
   }, [state, city]);
 

@@ -34,8 +34,6 @@ function SearchSection() {
 
   return (
     <form onSubmit={handleSearch} className="p-6">
-      {/* State Dropdown */}
-      {/* State Dropdown */}
       <div id="state">
         <label
           htmlFor="stateSelect"
