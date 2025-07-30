@@ -28,7 +28,7 @@ function SearchSection() {
   const handleSearch = (e) => {
     e.preventDefault();
     if (selectedState && selectedCity) {
-      navigate(`/search?state=${selectedState}&city=${selectedCity}`);
+      navigate(`/events?state=${selectedState}&city=${selectedCity}`);
     }
   };
 

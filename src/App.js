@@ -11,7 +11,7 @@ function App() {
       <Header />
       <Routes>
         <Route path="/" element={<LandingPage />} />
-        <Route path="/search" element={<SearchResultsPage />} />
+        <Route path="/events" element={<SearchResultsPage />} />
         <Route path="/book/:eventId" element={<BookingPage />} />
         <Route path="/my-bookings" element={<MyBookings />} />
       </Routes>
