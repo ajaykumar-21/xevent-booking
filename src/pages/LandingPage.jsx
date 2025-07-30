@@ -6,20 +6,22 @@ function SearchSection() {
   const [cities, setCities] = useState([]);
   const [selectedState, setSelectedState] = useState("");
   const [selectedCity, setSelectedCity] = useState("");
+  const [showStates, setShowStates] = useState(false);
+  const [showCities, setShowCities] = useState(false);
 
   const navigate = useNavigate();
 
   useEffect(() => {
     fetch("https://eventdata.onrender.com/states")
       .then((res) => res.json())
-      .then((data) => setStates(data));
+      .then(setStates);
   }, []);
 
   useEffect(() => {
     if (selectedState) {
       fetch(`https://eventdata.onrender.com/cities/${selectedState}`)
         .then((res) => res.json())
-        .then((data) => setCities(data));
+        .then(setCities);
     }
   }, [selectedState]);
 
@@ -34,39 +36,63 @@ function SearchSection() {
     <form onSubmit={handleSearch} className="p-6">
       {/* State Dropdown */}
       <div id="state">
-        <label>Select State:</label>
-        <ul>
-          {states.map((state) => (
-            <li
-              key={state}
-              onClick={() => setSelectedState(state)}
-              style={{ cursor: "pointer" }}
-            >
-              {state}
-            </li>
-          ))}
-        </ul>
-        <p>Selected: {selectedState}</p>
+        <label
+          onClick={() => setShowStates(!showStates)}
+          style={{ cursor: "pointer" }}
+        >
+          Select State: {selectedState && <strong>{selectedState}</strong>}
+        </label>
+        {showStates && (
+          <ul>
+            {states.map((state) => (
+              <li
+                key={state}
+                onClick={() => {
+                  setSelectedState(state);
+                  setSelectedCity(""); // reset city
+                  setShowStates(false);
+                  setShowCities(true); // open city next
+                }}
+                style={{ cursor: "pointer" }}
+              >
+                {state}
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
 
       {/* City Dropdown */}
       <div id="city">
-        <label>Select City:</label>
-        <ul>
-          {cities.map((city) => (
-            <li
-              key={city}
-              onClick={() => setSelectedCity(city)}
-              style={{ cursor: "pointer" }}
-            >
-              {city}
-            </li>
-          ))}
-        </ul>
-        <p>Selected: {selectedCity}</p>
+        <label
+          onClick={() => setShowCities(!showCities)}
+          style={{ cursor: "pointer" }}
+        >
+          Select City: {selectedCity && <strong>{selectedCity}</strong>}
+        </label>
+        {showCities && (
+          <ul>
+            {cities.map((city) => (
+              <li
+                key={city}
+                onClick={() => {
+                  setSelectedCity(city);
+                  setShowCities(false);
+                }}
+                style={{ cursor: "pointer" }}
+              >
+                {city}
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
 
-      <button id="searchBtn" type="submit">
+      <button
+        id="searchBtn"
+        type="submit"
+        disabled={!selectedState || !selectedCity}
+      >
         Search
       </button>
     </form>
