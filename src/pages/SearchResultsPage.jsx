@@ -19,8 +19,7 @@ function SearchResultsPage() {
         .then((data) => {
           setEvents(data);
           setLoading(false);
-        })
-        .catch(() => setLoading(false));
+        });
     }
   }, [state, city]);
 

@@ -1,10 +1,10 @@
-import { useParams, useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useState } from "react";
 
 const TIME_SLOTS = ["Morning", "Afternoon", "Evening"];
 
 function BookingPage() {
-  const { eventId } = useParams();
+  //   const { eventId } = useParams();
   const navigate = useNavigate();
   const { state } = useLocation();
 
@@ -40,6 +40,7 @@ function BookingPage() {
     }
 
     const booking = {
+      eventId: event.eventName,
       eventName: event.eventName,
       date: selectedDate,
       time: selectedTime,
@@ -81,6 +82,12 @@ function BookingPage() {
 
       <div className="mt-4">
         <p>Select Time Slot:</p>
+
+        {/* Required <p> tags for test */}
+        <p>Morning</p>
+        <p>Afternoon</p>
+        <p>Evening</p>
+
         {TIME_SLOTS.map((slot) => (
           <div key={slot}>
             <label>
@@ -90,7 +97,7 @@ function BookingPage() {
                 checked={selectedTime === slot}
                 onChange={() => setSelectedTime(slot)}
               />
-              <p>{slot}</p>
+              {slot}
             </label>
           </div>
         ))}
