@@ -35,13 +35,16 @@ function SearchSection() {
   return (
     <form onSubmit={handleSearch} className="p-6">
       {/* State Dropdown */}
+      {/* State Dropdown */}
       <div id="state">
         <label
+          htmlFor="stateSelect"
           onClick={() => setShowStates(!showStates)}
           style={{ cursor: "pointer" }}
         >
-          Select State: {selectedState && <strong>{selectedState}</strong>}
+          Select State
         </label>
+        {selectedState && <p>Selected: {selectedState}</p>}
         {showStates && (
           <ul>
             {states.map((state) => (
@@ -51,7 +54,7 @@ function SearchSection() {
                   setSelectedState(state);
                   setSelectedCity(""); // reset city
                   setShowStates(false);
-                  setShowCities(true); // open city next
+                  setShowCities(true); // open city dropdown next
                 }}
                 style={{ cursor: "pointer" }}
               >
@@ -65,11 +68,13 @@ function SearchSection() {
       {/* City Dropdown */}
       <div id="city">
         <label
+          htmlFor="citySelect"
           onClick={() => setShowCities(!showCities)}
           style={{ cursor: "pointer" }}
         >
-          Select City: {selectedCity && <strong>{selectedCity}</strong>}
+          Select City
         </label>
+        {selectedCity && <p>Selected: {selectedCity}</p>}
         {showCities && (
           <ul>
             {cities.map((city) => (
